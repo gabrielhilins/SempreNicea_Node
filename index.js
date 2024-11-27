@@ -2,12 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./models');
 const avaliacaoRoutes = require('./routes/Avaliacao/avaliacao');
+const areasTematicasRoutes = require('./routes/AreasTematicas/areasTematicas');
+const noticiasRoutes = require('./routes/Noticia/noticia');
 
 const app = express();
 app.use(bodyParser.json());
 
 // Rotas
 app.use('/avaliacoes', avaliacaoRoutes);
+app.use('/areasTematicas', areasTematicasRoutes);
+app.use('/noticia', noticiasRoutes);
 
 // Sincronização do banco de dados
 sequelize.sync()
