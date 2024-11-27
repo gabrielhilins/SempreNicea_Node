@@ -1,5 +1,5 @@
 const Noticia = require('../../models/Noticia/noticia');
-const AreasTematicas = require('../../models/AreasTematicas/areasTematicas');
+const AreasTematicas = require('../../models/AreasTematicas/areastematicas');
 const Membro = require('../../models/Membro/membro');
 
 // Retorna todas as notícias
