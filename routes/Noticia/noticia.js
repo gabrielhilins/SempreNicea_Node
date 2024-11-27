@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const noticiaController = require('../../controllers/noticia');
+const noticiaController = require('../../controllers/Noticia/noticia');
 
 // Define as rotas para as notícias
 router.get('/', noticiaController.getAllNoticias); // Listar todas as notícias
