@@ -30,29 +30,18 @@ const Noticia = sequelize.define('Noticia', {
 
 // Relacionamentos
 Noticia.associate = (models) => {
-  // Relacionamento com Autor
-  Noticia.belongsTo(models.Usuario, {
-    foreignKey: 'autor_id',
+  // Relacionamento com Membro
+  Noticia.belongsTo(models.Membro, {
+    foreignKey: 'membro_id',
     as: 'autor',
+    allowNull: false,
   });
 
-  // Relacionamento com Comentários
-  Noticia.hasMany(models.Comentario, {
-    foreignKey: 'noticia_id',
-    as: 'comentarios',
-  });
-
-  // Relacionamento com Categorias
-  Noticia.belongsTo(models.Categoria, {
-    foreignKey: 'categoria_id',
-    as: 'categoria',
-  });
-
-  // Relacionamento com Tags (M:N)
-  Noticia.belongsToMany(models.Tag, {
-    through: 'NoticiaTag',
-    foreignKey: 'noticia_id',
-    as: 'tags',
+  // Relacionamento com AreasTematicas
+  Noticia.belongsTo(models.AreasTematicas, {
+    foreignKey: 'area_tematica_id',
+    as: 'areaTematica',
+    allowNull: false,
   });
 };
 
