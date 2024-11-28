@@ -4,7 +4,8 @@ const sequelize = require('./models');
 const avaliacaoRoutes = require('./routes/Avaliacao/avaliacao');
 const areasTematicasRoutes = require('./routes/AreasTematicas/areasTematicas');
 const noticiasRoutes = require('./routes/Noticia/noticia');
-const projetoRoutes = require('./routes/Projeto/projeto')
+const projetoRoutes = require('./routes/Projeto/projeto');
+const membroRoutes = require('./routes/Membro/membro');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,7 +14,8 @@ app.use(bodyParser.json());
 app.use('/avaliacoes', avaliacaoRoutes);
 app.use('/areasTematicas', areasTematicasRoutes);
 app.use('/noticia', noticiasRoutes);
-app.use('/projeto', projetoRoutes)
+app.use('/projeto', projetoRoutes);
+app.use('/membro', membroRoutes);
 
 // Sincronização do banco de dados
 sequelize.sync()
