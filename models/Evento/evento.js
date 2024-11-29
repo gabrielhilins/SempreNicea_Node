@@ -1,50 +1,44 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../index'); 
-const Membro = require('./Membro'); 
 
-const Eventos = sequelize.define('Eventos', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    titulo: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    descricao: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-    },
-    arquivosMidia: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    dataEvento: {
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-    dataPublicado: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-    },
-    publicadorEventosId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Membro,
-            key: 'id',
-        },
-        allowNull: false,
-    },
-}, {
-    tableName: 'eventos',
-    timestamps: false, 
+const Evento = sequelize.define('Evento', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true, 
+    allowNull: false,
+  },
+  titulo: {
+    type: DataTypes.STRING,
+    allowNull: false, // Campo obrigatório
+  },
+  descricao: {
+    type: DataTypes.TEXT,
+    allowNull: true, // Campo opcional
+  },
+  arquivosMidia: {
+    type: DataTypes.STRING,
+    allowNull: true, // Campo opcional
+  },
+  dataEvento: {
+    type: DataTypes.DATE,
+    allowNull: false, // Campo obrigatório
+  },
+  dataPublicado: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW, // Define o momento atual como padrão
+    allowNull: false,
+  },
 });
 
-// Relacionamento com Membro
-Eventos.belongsTo(Membro, {
+// Relacionamentos
+Evento.associate = (models) => {
+  // Relacionamento com Membro (publicador)
+  Evento.belongsTo(models.Membro, {
     foreignKey: 'publicadorEventosId',
     as: 'publicador',
-});
+    allowNull: false,
+  });
+};
 
-module.exports = Eventos;
+module.exports = Evento;

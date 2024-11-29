@@ -1,104 +1,80 @@
-const express = require('express');
-const router = express.Router();
-const { Eventos, Membro } = require('../models');
-const { Op } = require('sequelize');
+const Evento = require('../../models/Evento/evento'); // Importa o modelo
+console.log(Evento); 
 
-// Criar um novo evento
-router.post('/add/evento', async (req, res) => {
-    try {
-        const evento = await Eventos.create(req.body);
-        res.status(201).json(evento);
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao criar o evento.', error: error.message });
+// Retorna todos os eventos
+exports.getAllEventos = async (req, res) => {
+  try {
+    const eventos = await Evento.findAll();
+    res.status(200).json(eventos);
+  } catch (error) {
+    console.error('Erro ao buscar eventos:', error);
+    res.status(500).json({ message: 'Erro ao buscar eventos', error: error.message });
+  }
+};
+
+// Cria um novo evento
+exports.createEvento = async (req, res) => {
+  try {
+    const { titulo, descricao, arquivosMidia, dataEvento, publicadorEventosId } = req.body;
+    const evento = await Evento.create({
+      titulo,
+      descricao,
+      arquivosMidia,
+      dataEvento,
+      publicadorEventosId,
+      dataPublicado: new Date(), // Define a data de publicação automaticamente
+    });
+    res.status(201).json(evento);
+  } catch (error) {
+    console.error('Erro ao criar evento:', error);
+    res.status(500).json({ message: 'Erro ao criar evento', error: error.message });
+  }
+};
+
+// Busca um evento por ID
+exports.getEventoById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const evento = await Evento.findByPk(id);
+    if (!evento) {
+      return res.status(404).json({ message: 'Evento não encontrado' });
     }
-});
+    res.status(200).json(evento);
+  } catch (error) {
+    console.error('Erro ao buscar evento por ID:', error);
+    res.status(500).json({ message: 'Erro ao buscar evento', error: error.message });
+  }
+};
 
-// Listar todos os eventos
-router.get('/list/eventos', async (req, res) => {
-    try {
-        const eventos = await Eventos.findAll();
-        res.status(200).json(eventos);
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar eventos.', error: error.message });
+// Atualiza um evento
+exports.updateEvento = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { titulo, descricao, arquivosMidia, dataEvento } = req.body;
+    const evento = await Evento.findByPk(id);
+    if (!evento) {
+      return res.status(404).json({ message: 'Evento não encontrado' });
     }
-});
+    await evento.update({ titulo, descricao, arquivosMidia, dataEvento });
+    res.status(200).json(evento);
+  } catch (error) {
+    console.error('Erro ao atualizar evento:', error);
+    res.status(500).json({ message: 'Erro ao atualizar evento', error: error.message });
+  }
+};
 
-// Buscar eventos por título
-router.get('/list/titulo/:titulo', async (req, res) => {
-    try {
-        const eventos = await Eventos.findAll({
-            where: { titulo: { [Op.like]: `%${req.params.titulo}%` } }
-        });
-        res.status(200).json(eventos);
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar eventos pelo título.', error: error.message });
+// Deleta um evento
+exports.deleteEvento = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const evento = await Evento.findByPk(id);
+    if (!evento) {
+      return res.status(404).json({ message: 'Evento não encontrado' });
     }
-});
-
-// Buscar eventos por publicador
-router.get('/list/publicador/:publicadorId', async (req, res) => {
-    try {
-        const eventos = await Eventos.findAll({
-            where: { publicadorEventosId: req.params.publicadorId },
-            include: [{ model: Membro }]
-        });
-        res.status(200).json(eventos);
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar eventos pelo publicador.', error: error.message });
-    }
-});
-
-// Buscar eventos por descrição
-router.get('/list/descricao/:descricao', async (req, res) => {
-    try {
-        const eventos = await Eventos.findAll({
-            where: { descricao: { [Op.like]: `%${req.params.descricao}%` } }
-        });
-        res.status(200).json(eventos);
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar eventos pela descrição.', error: error.message });
-    }
-});
-
-// Buscar eventos por arquivosMidia
-router.get('/list/arquivosMidia/:arquivosMidia', async (req, res) => {
-    try {
-        const eventos = await Eventos.findAll({
-            where: { arquivosMidia: { [Op.like]: `%${req.params.arquivosMidia}%` } }
-        });
-        res.status(200).json(eventos);
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar eventos por arquivos de mídia.', error: error.message });
-    }
-});
-
-// Deletar um evento por ID
-router.delete('/delete/evento/:id', async (req, res) => {
-    try {
-        const result = await Eventos.destroy({ where: { id: req.params.id } });
-        if (result) {
-            res.status(204).send();
-        } else {
-            res.status(404).json({ message: 'Evento não encontrado.' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao deletar o evento.', error: error.message });
-    }
-});
-
-// Atualizar um evento por ID
-router.put('/update/:id', async (req, res) => {
-    try {
-        const evento = await Eventos.findByPk(req.params.id);
-        if (evento) {
-            await evento.update(req.body);
-            res.status(200).json(evento);
-        } else {
-            res.status(404).json({ message: 'Evento não encontrado.' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Erro ao atualizar o evento.', error: error.message });
-    }
-});
-
-module.exports = router;
+    await evento.destroy();
+    res.status(200).json({ message: 'Evento deletado com sucesso' });
+  } catch (error) {
+    console.error('Erro ao deletar evento:', error);
+    res.status(500).json({ message: 'Erro ao deletar evento', error: error.message });
+  }
+};
