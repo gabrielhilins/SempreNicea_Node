@@ -6,7 +6,8 @@ const areasTematicasRoutes = require('./routes/AreasTematicas/areasTematicas');
 const noticiasRoutes = require('./routes/Noticia/noticia');
 const projetoRoutes = require('./routes/Projeto/projeto');
 const membroRoutes = require('./routes/Membro/membro');
-const eventosRoutes = require('./controllers/EventosController');
+const eventosRoutes = require('./routes/Evento/evento');
+const usuarioRoutes = require('./routes/Usuario/usuario');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,6 +19,7 @@ app.use('/noticia', noticiasRoutes);
 app.use('/projeto', projetoRoutes);
 app.use('/membro', membroRoutes);
 app.use('/api/evento', eventosRoutes);
+app.use('/usuario', usuarioRoutes);
 
 // Sincronização do banco de dados
 sequelize.sync()
