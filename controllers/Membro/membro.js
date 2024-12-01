@@ -29,9 +29,9 @@ exports.getMembroById = async(req,res ) => {
 //Criar membro
 exports.createMembro = async (req, res) => {
     try{
-        const {nomeUsuario, email, senha, bio, contato, localizacao, fotoPerfil, fotoFundo, comprovante, vinculoUniversitario, formacao } = req.body;
+        const {nomeMembro, email, senha, bio, contato, localizacao, fotoPerfil, fotoFundo, comprovante, vinculoUniversitario, formacao } = req.body;
         const membro = await Membro.create(
-            { nomeUsuario, email, senha, bio, contato, localizacao, fotoPerfil, fotoFundo, comprovante, vinculoUniversitario, formacao }
+            { nomeMembro, email, senha, bio, contato, localizacao, fotoPerfil, fotoFundo, comprovante, vinculoUniversitario, formacao }
         );
         res.status(201).json(membro);
     } catch( error) {
@@ -41,31 +41,49 @@ exports.createMembro = async (req, res) => {
 };
 
 //Atualiza membro
-exports.updateMembro = async(req, res) => {
-    try{
-        const{ id } =  req.params;
-        const {nomeUsuario, email, senha, bio, contato, localizacao, fotoPerfil, fotoFundo, comprovante, vinculoUniversitario, formacao} = req.body;
+exports.updateMembro = async (req, res) => {
+    try {
+        const { id } = req.params; 
+        const { nomeMembro, email, senha, bio, contato, localizacao, fotoPerfil, fotoFundo, comprovante, vinculoUniversitario, formacao } = req.body;
+
+        // Busca o membro pelo ID
         const membro = await Membro.findByPk(id);
-        if(!membro){
-            return res.status(404).json({message: 'Membro não encontrado'});
+
+        
+        if (!membro) {
+            return res.status(404).json({ message: 'Membro não encontrado' });
         }
-        await Membro.update(
-            {
-                nomeUsuario, email, senha, bio, contato, localizacao, fotoFundo, fotoPerfil, comprovante, vinculoUniversitario, formacao}
-        );
+
+        
+        await membro.update({
+            nomeMembro,
+            email,
+            senha,
+            bio,
+            contato,
+            localizacao,
+            fotoPerfil,
+            fotoFundo,
+            comprovante,
+            vinculoUniversitario,
+            formacao
+        });
+
+        
         res.status(200).json(membro);
-        } catch(error){
-        console.error("Error ao atualizar membro", error);
-        res.status(500).json({message: 'Error ao atualizar membro', error: error.message});
+    } catch (error) {
+        console.error("Error ao atualizar membro:", error); 
+        res.status(500).json({ message: 'Error ao atualizar membro', error: error.message }); 
     }
 };
+
 
 //delete membro
 exports.deleteMembro = async (req,res) =>{
     try{
         const{id} = req.params;
         const membro = await Membro.findByPk(id);
-        if(membro){
+        if(!membro){
             return res.status(404).json({message: 'Membro não encontrado'});
         }
         await membro.destroy();

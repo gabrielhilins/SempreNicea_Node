@@ -22,7 +22,7 @@ app.use('/api/evento', eventosRoutes);
 app.use('/usuario', usuarioRoutes);
 
 // Sincronização do banco de dados
-sequelize.sync()
+sequelize.sync({alter: true})
   .then(() => console.log('Banco de dados sincronizado!'))
   .catch(err => console.error('Erro ao sincronizar banco de dados:', err));
 

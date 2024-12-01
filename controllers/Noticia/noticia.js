@@ -1,16 +1,11 @@
 const Noticia = require('../../models/Noticia/noticia');
-const AreasTematicas = require('../../models/AreasTematicas/areastematicas');
 const Membro = require('../../models/Membro/membro');
 
 // Retorna todas as notícias
 exports.getAllNoticias = async (req, res) => {
   try {
-    const noticias = await Noticia.findAll({
-      include: [
-        { model: AreasTematicas, as: 'areaTematica' },
-        { model: Membro, as: 'autor' },
-      ],
-    });
+    const noticias = await Noticia.findAll();
+    
     res.status(200).json(noticias);
   } catch (error) {
     console.error('Erro ao buscar notícias:', error);
@@ -21,12 +16,10 @@ exports.getAllNoticias = async (req, res) => {
 // Cria uma nova notícia
 exports.createNoticia = async (req, res) => {
   try {
-    const { titulo, conteudo, membro_id, area_tematica_id } = req.body;
+    const { titulo, conteudo } = req.body;
     const noticia = await Noticia.create({
       titulo,
       conteudo,
-      membro_id,
-      area_tematica_id,
       dataPublicacao: new Date(),
     });
     res.status(201).json(noticia);
@@ -40,12 +33,7 @@ exports.createNoticia = async (req, res) => {
 exports.getNoticiaById = async (req, res) => {
   try {
     const { id } = req.params;
-    const noticia = await Noticia.findByPk(id, {
-      include: [
-        { model: AreasTematicas, as: 'areaTematica' },
-        { model: Membro, as: 'autor' },
-      ],
-    });
+    const noticia = await Noticia.findByPk(id);
     if (!noticia) {
       return res.status(404).json({ message: 'Notícia não encontrada' });
     }
@@ -60,12 +48,12 @@ exports.getNoticiaById = async (req, res) => {
 exports.updateNoticia = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulo, conteudo, area_tematica_id } = req.body;
+    const { titulo, conteudo} = req.body;
     const noticia = await Noticia.findByPk(id);
     if (!noticia) {
       return res.status(404).json({ message: 'Notícia não encontrada' });
     }
-    await noticia.update({ titulo, conteudo, area_tematica_id });
+    await noticia.update({ titulo, conteudo });
     res.status(200).json(noticia);
   } catch (error) {
     console.error('Erro ao atualizar notícia:', error);

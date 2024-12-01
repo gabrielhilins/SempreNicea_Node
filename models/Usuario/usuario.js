@@ -1,15 +1,15 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../index');
 
-const Membro = sequelize.define('Usuario', {
+const Usuario = sequelize.define('Usuario', {
 
     id:{
-        type: dataTypes.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
-    nomeUsario:{
+    nomeUsuario:{
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -43,3 +43,5 @@ const Membro = sequelize.define('Usuario', {
     },
 
 })
+
+module.exports = Usuario;

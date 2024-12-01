@@ -1,16 +1,14 @@
-const {dataTypes} = require('sequelize');
+const {DataTypes} = require('sequelize');
 const sequelize = require('../index');
-const { describe } = require('node:test');
-const { type } = require('os');
 
 const Membro = sequelize.define('Membro', {
     id:{
-        type: dataTypes.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
     },
-    nomeUsario:{
+    nomeMembro:{
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -60,7 +58,9 @@ const Membro = sequelize.define('Membro', {
     },
 });
 
-Membro.associate = (models) =>{
+/*
+
+Membro.associate = (models) => {
     Membro.belongsTo(models.Projeto, {
         foreignKey: 'projeto_id',
         as: 'projeto',
@@ -69,6 +69,12 @@ Membro.associate = (models) =>{
         foreignKey: 'evento_id',
         as: 'evento',
     });
-}
+    Membro.hasMany(models.Noticia, {
+        foreignKey: 'membro_id',
+        as: 'noticias',
+    });
+};
+
+*/
 
 module.exports = Membro;

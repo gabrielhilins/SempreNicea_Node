@@ -26,23 +26,28 @@ const Noticia = sequelize.define('Noticia', {
     allowNull: false,
     defaultValue: 0,
   },
+  /*
+  membro_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Membro',
+      key: 'id'
+    },
+  },
+  */
 });
 
+/*
 // Relacionamentos
 Noticia.associate = (models) => {
   // Relacionamento com Membro
   Noticia.belongsTo(models.Membro, {
     foreignKey: 'membro_id',
-    as: 'autor',
-    allowNull: false,
-  });
-
-  // Relacionamento com AreasTematicas
-  Noticia.belongsTo(models.AreasTematicas, {
-    foreignKey: 'area_tematica_id',
-    as: 'areaTematica',
+    as: 'membro',
     allowNull: false,
   });
 };
+*/
 
 module.exports = Noticia;

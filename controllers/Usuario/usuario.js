@@ -1,4 +1,4 @@
-const Usuario = require('../../models/Usuario/usuario');
+const Usuario = require('../../models/Usuario//usuario');
 console.log(Usuario);
 
 // Buscar id
