@@ -1,4 +1,6 @@
-const Usuario = require('../../models/Usuario//usuario');
+const { sequelize } = require('../../models');
+
+const Usuario = require('../../models/Usuario/usuario')(sequelize);
 console.log(Usuario);
 
 // Buscar id

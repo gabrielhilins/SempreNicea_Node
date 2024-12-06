@@ -1,7 +1,8 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../index');
+const {DataTypes} = require('sequelize');
 
-const Noticia = sequelize.define('Noticia', {
+
+module.exports = (sequelize) => {
+const noticia = sequelize.define('Noticia', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -26,28 +27,17 @@ const Noticia = sequelize.define('Noticia', {
     allowNull: false,
     defaultValue: 0,
   },
-  /*
   membro_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: 'Membro',
-      key: 'id'
-    },
   },
-  */
 });
 
-/*
-// Relacionamentos
-Noticia.associate = (models) => {
-  // Relacionamento com Membro
-  Noticia.belongsTo(models.Membro, {
-    foreignKey: 'membro_id',
-    as: 'membro',
-    allowNull: false,
+noticia.associate = (models) => {
+  noticia.belongsTo(models.Membro, {
+      foreignKey: 'membro_id',
+      as: 'publicador',
   });
 };
-*/
-
-module.exports = Noticia;
+return noticia;
+}

@@ -1,4 +1,6 @@
-const Projeto = require('../../models/Projeto/projeto');
+const { sequelize } = require('../../models');
+
+const Projeto = require('../../models/Projeto/projeto')(sequelize);
 console.log(Projeto)
 
 exports.getAllProjetos = async (req, res) => {

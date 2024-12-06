@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../index');
 
+
+module.exports = (sequelize) => {
 const Projeto = sequelize.define('Projeto', {
 
     id: {
@@ -30,6 +31,18 @@ const Projeto = sequelize.define('Projeto', {
         allowNull: true,
     },
 
-})
+});
 
-module.exports = Projeto;
+Projeto.associate = (models) => {
+    Projeto.belongsTo(models.Membro, {
+        foreignKey: 'membro_id',
+        as: 'autor',
+    });
+    Projeto.hasMany(models.Avaliacao, {
+        foreignKey: 'avaliacao_id',
+        as: 'avaliacoes',
+    });
+  };
+return Projeto;
+
+}

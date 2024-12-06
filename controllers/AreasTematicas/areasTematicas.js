@@ -1,4 +1,6 @@
-const AreasTematicas = require('../../models/AreasTematicas/areastematicas');
+const { sequelize } = require('../../models');
+
+const AreasTematicas = require('../../models/AreasTematicas/areastematicas')(sequelize);
 
 
 console.log(AreasTematicas);

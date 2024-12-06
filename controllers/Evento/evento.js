@@ -1,4 +1,6 @@
-const Evento = require('../../models/Evento/evento'); // Importa o modelo
+const { sequelize } = require('../../models');
+
+const Evento = require('../../models/Evento/evento')(sequelize); // Importa o modelo
 console.log(Evento); 
 
 // Retorna todos os eventos

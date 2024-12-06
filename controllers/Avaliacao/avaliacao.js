@@ -1,4 +1,7 @@
-const Avaliacao  = require('../../models/Avaliacao/avaliacao'); // importa o modelo
+const { sequelize } = require('../../models');
+
+const Avaliacao  = require('../../models/Avaliacao/avaliacao')(sequelize); // importa o modelo
+
 console.log(Avaliacao);  // mostra o modelo definido pra ajudar no debug do negocio
 
 // Retorna todas as avaliações

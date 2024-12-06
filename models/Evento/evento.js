@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../index'); 
 
+
+module.exports = (sequelize) => {
 const Evento = sequelize.define('Evento', {
   id: {
     type: DataTypes.INTEGER,
@@ -35,10 +36,10 @@ const Evento = sequelize.define('Evento', {
 Evento.associate = (models) => {
   // Relacionamento com Membro (publicador)
   Evento.belongsTo(models.Membro, {
-    foreignKey: 'publicadorEventosId',
+    foreignKey: 'membro_id',
     as: 'publicador',
     allowNull: false,
   });
 };
-
-module.exports = Evento;
+return Evento;
+}

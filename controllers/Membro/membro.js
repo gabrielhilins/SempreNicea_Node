@@ -1,14 +1,16 @@
-const Membro = require('../../models/Membro/membro');
+const { sequelize } = require('../../models');
+
+const Membro = require('../../models/Membro/membro')(sequelize);
 console.log(Membro);
 
 //GetAll
 exports.getAllMembro = async (req, res) => {
     try{
-        const membro = await Membro.findAll();
-        res.status(200).json(membro);
+        const membros = await Membro.findAll();
+        res.status(200).json(membros);
     } catch (error){
-        console.error('Erro ao buscar o membro:', error);
-        res.status(500).json({message:'Erro ao buscar membro', error: error.message });
+        console.error('Erro ao buscar os membros:', error);
+        res.status(500).json({message:'Erro ao buscar membros', error: error.message });
     }
 };
 

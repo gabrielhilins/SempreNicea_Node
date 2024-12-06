@@ -1,41 +1,33 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../index'); // Ajuste o caminho conforme necessário
 
-const AreasTematicas = sequelize.define('AreasTematicas', {
-  id: {
-    type: DataTypes.BIGINT,  // Use BIGINT para representar o tipo Long do Java
-    primaryKey: true,
-    autoIncrement: true,  // Garante que o id será gerado automaticamente
-  },
-  titulo: {
-    type: DataTypes.STRING,
-    allowNull: false,  // Pode definir como obrigatória se necessário
-  },
-  descricao: {
-    type: DataTypes.STRING,
-    allowNull: true,  // Pode ser null, se for o caso
-  },
-  dataInicio: {
-    type: DataTypes.STRING,  // A string pode ser usada aqui, mas considere usar DATE ou DATEONLY
-    allowNull: true,
-  },
-  dataTermino: {
-    type: DataTypes.STRING,  // O mesmo vale para este campo, pode ser usado DATE ou DATEONLY
-    allowNull: true,
-  },
-  tempoTotal: {
-    type: DataTypes.BIGINT,  // Usando BIGINT para representar um valor numérico
-    allowNull: true,  // Pode ser null, se o valor não for fornecido
-  },
-});
-
-// Relacionamento
-AreasTematicas.associate = (models) => {
-  // Um para Muitos (One-to-Many): Uma área temática tem muitos projetos
-  AreasTematicas.hasMany(models.Projeto, {
-    foreignKey: 'areaTematicaAssociada',
-    as: 'todosProjetos',  // Nome do relacionamento no modelo Projeto
+module.exports = (sequelize) => {
+  const AreasTematicas = sequelize.define('AreasTematicas', {
+    id: {
+      type: DataTypes.BIGINT,  // Use BIGINT para representar o tipo Long do Java
+      primaryKey: true,
+      autoIncrement: true,  // Garante que o id será gerado automaticamente
+    },
+    titulo: {
+      type: DataTypes.STRING,
+      allowNull: false,  // Pode definir como obrigatória se necessário
+    },
+    descricao: {
+      type: DataTypes.STRING,
+      allowNull: true,  // Pode ser null, se for o caso
+    },
+    dataInicio: {
+      type: DataTypes.STRING,  // A string pode ser usada aqui, mas considere usar DATE ou DATEONLY
+      allowNull: true,
+    },
+    dataTermino: {
+      type: DataTypes.STRING,  // O mesmo vale para este campo, pode ser usado DATE ou DATEONLY
+      allowNull: true,
+    },
+    tempoTotal: {
+      type: DataTypes.BIGINT,  // Usando BIGINT para representar um valor numérico
+      allowNull: true,  // Pode ser null, se o valor não for fornecido
+    },
   });
-};
 
-module.exports = AreasTematicas;
+  return AreasTematicas; // Aqui você retorna a definição do modelo para que possa ser utilizado
+};

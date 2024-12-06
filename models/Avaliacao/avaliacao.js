@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../index'); // Certifique-se de ajustar o caminho para o arquivo de configuração Sequelize
 
+
+module.exports = (sequelize) => {
 const Avaliacao = sequelize.define('Avaliacao', {
   id: {
     type: DataTypes.INTEGER,
@@ -27,26 +28,13 @@ const Avaliacao = sequelize.define('Avaliacao', {
   },
 });
 
-// Relacionamentos
-Avaliacao.associate = (models) => {
-  // Membro avaliador (caso seja um membro)
-  Avaliacao.belongsTo(models.Membro, {
-    foreignKey: 'membro_id',
-    as: 'membroAvaliador',
-  });
-
-  // Usuário avaliador (caso seja um usuário)
-  Avaliacao.belongsTo(models.Usuario, {
-    foreignKey: 'usuario_id',
-    as: 'usuarioAvaliador',
-  });
-
   // Projeto avaliado (relacionamento obrigatório)
+Avaliacao.associate = (models) => {
   Avaliacao.belongsTo(models.Projeto, {
     foreignKey: 'projeto_id',
     as: 'projetoAvaliado',
     allowNull: false,
   });
 };
-
-module.exports = Avaliacao;
+return Avaliacao;
+}

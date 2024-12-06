@@ -1,6 +1,7 @@
+const { sequelize } = require('./models/index');
+
 const express = require('express');
 const bodyParser = require('body-parser');
-const sequelize = require('./models');
 const avaliacaoRoutes = require('./routes/Avaliacao/avaliacao');
 const areasTematicasRoutes = require('./routes/AreasTematicas/areasTematicas');
 const noticiasRoutes = require('./routes/Noticia/noticia');
@@ -18,11 +19,11 @@ app.use('/areasTematicas', areasTematicasRoutes);
 app.use('/noticia', noticiasRoutes);
 app.use('/projeto', projetoRoutes);
 app.use('/membro', membroRoutes);
-app.use('/api/evento', eventosRoutes);
+app.use('/evento', eventosRoutes);
 app.use('/usuario', usuarioRoutes);
 
 // Sincronização do banco de dados
-sequelize.sync({alter: true})
+sequelize.sync({force: true})
   .then(() => console.log('Banco de dados sincronizado!'))
   .catch(err => console.error('Erro ao sincronizar banco de dados:', err));
 
